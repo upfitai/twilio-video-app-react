@@ -1,6 +1,7 @@
 import { DEFAULT_VIDEO_CONSTRAINTS, SELECTED_AUDIO_INPUT_KEY, SELECTED_VIDEO_INPUT_KEY } from '../../../constants';
 import { getDeviceInfo, isPermissionDenied } from '../../../utils';
 import { useCallback, useState } from 'react';
+import { getANCKind } from '../../../anc/anc';
 import Video, {
   LocalVideoTrack,
   LocalAudioTrack,
@@ -9,10 +10,28 @@ import Video, {
   LocalAudioTrackOptions,
 } from 'twilio-video';
 
-const noiseCancellationOptions: NoiseCancellationOptions = {
-  sdkAssetsPath: '/krisp',
-  vendor: 'krisp',
-};
+const ancKind = getANCKind();
+
+function getNoiseCancellationOptions(): NoiseCancellationOptions | undefined {
+  switch (ancKind) {
+    case 'krisp':
+      return {
+        sdkAssetsPath: '/noisecancellation/krisp',
+        vendor: 'krisp',
+      };
+
+    case 'rnnoise':
+      return {
+        sdkAssetsPath: '/noisecancellation/rnnoise',
+        vendor: 'rnnoise',
+      };
+
+    default:
+      return undefined;
+  }
+}
+
+const noiseCancellationOptions = getNoiseCancellationOptions();
 
 export default function useLocalTracks() {
   const [audioTrack, setAudioTrack] = useState<LocalAudioTrack>();
