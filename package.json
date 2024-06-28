@@ -42,7 +42,7 @@
     "react-scripts": "5.0.0",
     "rimraf": "3.0.2",
     "strip-color": "^0.1.0",
-    "swiper": "^8.1.5",
+    "swiper": "^8.4.7",
     "ts-node": "^9.1.1",
     "twilio": "^3.63.1",
     "twilio-video": "^2.28.1",
